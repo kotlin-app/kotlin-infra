@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-service
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: order-service
+    {{- include "kotori-market.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.orderService.replicas }}
+  selector:
+    matchLabels:
+      app: order-service
+  template:
+    metadata:
+      labels:
+        app: order-service
+    spec:
+      containers:
+        - name: order-service
+          image: {{ .Values.imageRegistry }}/{{ .Values.orderService.image }}:{{ .Values.orderService.tag }}
+          ports:
+            - containerPort: {{ .Values.orderService.port }}
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://postgres:5432/orderdb
+            - name: SPRING_DATASOURCE_USERNAME
+              value: {{ .Values.postgres.username }}
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: {{ .Values.postgres.password }}
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              value: kafka:9092
+            - name: ZIPKIN_URL
+              value: http://zipkin:9411
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: {{ .Values.orderService.port }}
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: {{ .Values.orderService.port }}
+            initialDelaySeconds: 60
+            periodSeconds: 30
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-service
+  namespace: {{ .Values.namespace }}
+spec:
+  selector:
+    app: order-service
+  ports:
+    - port: {{ .Values.orderService.port }}
