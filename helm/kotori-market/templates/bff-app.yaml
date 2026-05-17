@@ -34,6 +34,10 @@ spec:
               value: http://zipkin:9411
             - name: JWT_SECRET
               value: {{ .Values.bff.jwtSecret }}
+            - name: KEYCLOAK_ISSUER_URI
+              value: http://keycloak:{{ .Values.keycloak.port }}/realms/{{ .Values.keycloak.realm }}
+            - name: SPRING_PROFILES_ACTIVE
+              value: keycloak
           readinessProbe:
             httpGet:
               path: /actuator/health

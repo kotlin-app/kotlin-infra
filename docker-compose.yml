@@ -134,6 +134,26 @@ services:
     networks:
       - microservices-network
 
+  keycloak:
+    image: quay.io/keycloak/keycloak:25.0
+    container_name: keycloak
+    command: start-dev --import-realm
+    ports:
+      - "8180:8080"
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    volumes:
+      - ./docker/keycloak/kotori-market-realm.json:/opt/keycloak/data/import/kotori-market-realm.json:ro
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8080/realms/kotori-market/.well-known/openid-configuration || exit 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
+    networks:
+      - microservices-network
+
   kafka:
     image: apache/kafka:3.7.1
     container_name: kafka

@@ -56,6 +56,14 @@ bff:
     enabled: true
     host: api.kotori-market.local
 
+keycloak:
+  image: quay.io/keycloak/keycloak:25.0
+  adminUser: admin
+  adminPassword: admin
+  port: 8080
+  nodePort: 30180
+  realm: kotori-market
+
 frontend:
   image: nginx:1.27-alpine
   port: 8090

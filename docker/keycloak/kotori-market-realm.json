@@ -1,0 +1,60 @@
+{
+  "realm": "kotori-market",
+  "enabled": true,
+  "displayName": "Kotori Market",
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "roles": {
+    "realm": [
+      { "name": "USER",  "description": "一般ユーザー" },
+      { "name": "ADMIN", "description": "管理者" }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "bff-client",
+      "name": "BFF Resource Server",
+      "enabled": true,
+      "publicClient": false,
+      "bearerOnly": true
+    },
+    {
+      "clientId": "frontend-client",
+      "name": "Kotori Market Frontend",
+      "enabled": true,
+      "publicClient": true,
+      "redirectUris": [
+        "http://localhost:8090/*"
+      ],
+      "webOrigins": [
+        "http://localhost:8090"
+      ],
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": true
+    }
+  ],
+  "users": [
+    {
+      "username": "admin",
+      "enabled": true,
+      "email": "admin@kotori-market.local",
+      "firstName": "Admin",
+      "lastName": "User",
+      "credentials": [
+        { "type": "password", "value": "admin123", "temporary": false }
+      ],
+      "realmRoles": ["USER", "ADMIN"]
+    },
+    {
+      "username": "user",
+      "enabled": true,
+      "email": "user@kotori-market.local",
+      "firstName": "Normal",
+      "lastName": "User",
+      "credentials": [
+        { "type": "password", "value": "user123", "temporary": false }
+      ],
+      "realmRoles": ["USER"]
+    }
+  ]
+}
