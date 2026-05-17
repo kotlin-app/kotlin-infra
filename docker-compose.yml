@@ -28,6 +28,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/productdb
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=postgres
+      - ZIPKIN_URL=http://zipkin:9411
     depends_on:
       postgres:
         condition: service_healthy
@@ -49,6 +50,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/reviewdb
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=postgres
+      - ZIPKIN_URL=http://zipkin:9411
     depends_on:
       postgres:
         condition: service_healthy
@@ -69,6 +71,7 @@ services:
     environment:
       - SERVICES_PRODUCT-URL=http://product-service:8081
       - SERVICES_REVIEW-URL=http://review-service:8082
+      - ZIPKIN_URL=http://zipkin:9411
     depends_on:
       product-service:
         condition: service_healthy
@@ -80,6 +83,14 @@ services:
       timeout: 5s
       retries: 3
       start_period: 30s
+    networks:
+      - microservices-network
+
+  zipkin:
+    image: openzipkin/zipkin:3
+    container_name: zipkin
+    ports:
+      - "9411:9411"
     networks:
       - microservices-network
 
