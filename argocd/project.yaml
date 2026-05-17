@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: kotori-market
+  namespace: argocd
+spec:
+  description: Kotori Market microservices project
+  sourceRepos:
+    - https://github.com/kotlin-app/kotlin-infra.git
+  destinations:
+    - namespace: kotori-market
+      server: https://kubernetes.default.svc
+    - namespace: argocd
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: ""
+      kind: Namespace
+  namespaceResourceWhitelist:
+    - group: "*"
+      kind: "*"
