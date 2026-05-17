@@ -20,7 +20,7 @@ services:
       - microservices-network
 
   product-service:
-    build: ./product-service
+    build: ../backend/product-service
     container_name: product-service
     ports:
       - "8081:8081"
@@ -42,7 +42,7 @@ services:
       - microservices-network
 
   review-service:
-    build: ./review-service
+    build: ../backend/review-service
     container_name: review-service
     ports:
       - "8082:8082"
@@ -64,7 +64,7 @@ services:
       - microservices-network
 
   bff:
-    build: ./bff-app
+    build: ../backend/bff-app
     container_name: bff-app
     ports:
       - "8080:8080"
@@ -92,7 +92,7 @@ services:
     ports:
       - "8090:8090"
     volumes:
-      - ./frontend:/usr/share/nginx/html:ro
+      - ../frontend:/usr/share/nginx/html:ro
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
     depends_on:
       bff:
