@@ -99,6 +99,7 @@ services:
     environment:
       - SERVICES_PRODUCT-URL=http://product-service:8081
       - SERVICES_REVIEW-URL=http://review-service:8082
+      - SERVICES_ORDER-URL=http://order-service:8083
       - ZIPKIN_URL=http://zipkin:9411
       - REDIS_HOST=redis
     depends_on:
@@ -107,6 +108,8 @@ services:
       review-service:
         condition: service_healthy
       redis:
+        condition: service_healthy
+      order-service:
         condition: service_healthy
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://localhost:8080/actuator/health"]
